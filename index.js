@@ -1,6 +1,18 @@
 const tabuleiro = document.getElementById('tabuleiro')
+const tamanhoTabuleiro = 32;
 const velocidadeSnake = 6;
 const corpoSnake = [{ x: 14, y: 14 }];
+
+//Gerando a comida em um lugar aleatório do TABULEIRO
+let posicaoComida = geradorDePosicoes();
+
+function geradorDePosicoes() {
+    return {
+        //Random vai de 0 a 0.9 {1 excluso} - Floor arredonda
+        x: Math.floor(Math.random() * tamanhoTabuleiro) + 1,
+        y: Math.floor(Math.random() * tamanhoTabuleiro) + 1
+    }
+};
 
 // Variavel de direção
 let direcaoSnake = { x: 0, y: 0 };
@@ -17,6 +29,7 @@ function atualizaTela() {
 //Criando os elementos {Pegando os atributos do CSS (Class List)}
 function desenhaTela() {
 
+    //Snake
     corpoSnake.forEach(cumprimento => {
         const elementoSnake = document.createElement('div');
         elementoSnake.classList.add('snake')
@@ -24,6 +37,13 @@ function desenhaTela() {
         elementoSnake.style.gridColumnStart = cumprimento.x;
         tabuleiro.appendChild(elementoSnake);
     });
+
+    //Comida
+    const elementoComida = document.createElement('div');
+    elementoComida.classList.add('comida')
+    elementoComida.style.gridRowStart = posicaoComida.y;
+    elementoComida.style.gridColumnStart = posicaoComida.x;
+    tabuleiro.appendChild(elementoComida);
 
 
 };
