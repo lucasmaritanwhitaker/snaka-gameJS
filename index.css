@@ -1,0 +1,35 @@
+/*Padrões TELA*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+}
+
+/*Vmin pra pegar o menor HxW [TAB SMP QUADRADO]*/
+
+#tabuleiro{
+    background-color: white;
+    height: 100vmin;
+    width: 100vmin;
+    display: grid;
+    grid-template-rows: repeat(32, 1fr);      
+    grid-template-columns: repeat(32, 1fr);
+}
+
+.snake{
+    background-color: red;
+    border: 0.25vmin solid black;
+}
+.comida{
+    background-color: green;
+    border: 0.25vmin solid black;
+}
