@@ -2,7 +2,10 @@ const tabuleiro = document.getElementById('tabuleiro')
 const tamanhoTabuleiro = 32;
 const velocidadeSnake = 6;
 const corpoSnake = [{ x: 14, y: 14 }];
+const expansaoCobra = 1;
 let gameOver = false;
+let posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
+let novoCumprimento = 0;
 
 // Variavel de direção
 let direcaoSnake = { x: 0, y: 0 };
@@ -34,10 +37,7 @@ window.addEventListener('keydown', e => {
 
 });
 
-//Gerando a comida em um lugar aleatório do TABULEIRO
-let posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
-
-//TABULEIRO
+//Gerador De Posições Aleatórias no TABULEIRO
 function geradorDePosicoesAleatoriasTabuleiro() {
     return {
         //Random vai de 0 a 0.9 {1 excluso} - Floor arredonda
@@ -45,26 +45,33 @@ function geradorDePosicoesAleatoriasTabuleiro() {
         y: Math.floor(Math.random() * tamanhoTabuleiro) + 1
     }
 };
+function expandirCobra(valor) {
+    novoCumprimento += valor;
+};
 
-//VAD - GAME-OVER
+function adcCumprimento() {
+    if (novoCumprimento > 0) {
+        corpoSnake.push({
+            ...corpoSnake[corpoSnake.length - 1]
+        });
+        novoCumprimento -= 1;
+    }
+};
+
+//VALIDAÇÃO - GAME-OVER
 //SNAKE - PAREDE
 function foraDoTabuleiro(position) {
     return position.x > tamanhoTabuleiro || position.x < 1 ||
         position.y > tamanhoTabuleiro || position.y < 1;
 }
-
-//Validação
+function cabecaSnake() {
+    return corpoSnake[0]
+};
 function checkGameOver() {
     if (foraDoTabuleiro(cabecaSnake())) {
         gameOver = true;
     }
 };
-function cabecaSnake() {
-    return corpoSnake[0]
-};
-
-//SNAKE - COMIDA
-
 
 //Colisão 3 {COBRA - COMIDA || COBRA - COBRA || COBRA - PAREDE}
 function colisao(posicao) {
@@ -75,18 +82,28 @@ function colisao(posicao) {
 
 function atualizaTela() {
     direcaoSnake = direcaoKeyDown();
-
-    //Cabeça Snake
-    corpoSnake[0].y += direcaoSnake.y;
-    corpoSnake[0].x += direcaoSnake.x;
-    tabuleiro.innerHTML = '';
+    adcCumprimento();
 
     if (colisao(posicaoComida)) {
         posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
+        expandirCobra(expansaoCobra);
+    };
+
+    //Corpo
+    //{Andar os seguimentos ganhos}
+    //Sempre na posição do anterior
+    for (let i = corpoSnake.length - 2; i >= 0; i--) {
+        corpoSnake[i + 1] = { ...corpoSnake[i] };
     }
+
+    //Cabeça 
+    corpoSnake[0].y += direcaoSnake.y;
+    corpoSnake[0].x += direcaoSnake.x;
+    tabuleiro.innerHTML = '';
 };
 
 function desenhaTela() {
+
     //Criando os elementos {Pegando os atributos do CSS (Class List)}
     //Snake
     corpoSnake.forEach(cumprimento => {
@@ -108,11 +125,9 @@ function desenhaTela() {
 //Qnt passou dês da ultima Render
 let ultimaRenderizacao = 0;
 
+//Main
 function looping(tempoAtual) {
 
-    if (gameOver) {
-        alert(`Você perdeu`)
-    }
     window.requestAnimationFrame(looping);
     const segundosRenderizados = (tempoAtual - ultimaRenderizacao) / 1000;
 
@@ -121,6 +136,13 @@ function looping(tempoAtual) {
 
     //Liberar {timer acumulado}
     ultimaRenderizacao = tempoAtual;
+
+
+
+    //fnc GAME OVER
+    if (gameOver) {
+        alert(`VOCÊ PERDEU`)
+    }
 
     atualizaTela();
     desenhaTela();
