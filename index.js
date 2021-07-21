@@ -1,5 +1,5 @@
 const tabuleiro = document.getElementById('tabuleiro')
-const tamanhoTabuleiro = 32;
+const tamanhoTabuleiro = 22;
 const velocidadeSnake = 8;
 const corpoSnake = [{ x: 14, y: 14 }];
 const expansaoCobra = 1;
