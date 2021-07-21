@@ -1,6 +1,6 @@
 const tabuleiro = document.getElementById('tabuleiro')
 const tamanhoTabuleiro = 32;
-const velocidadeSnake = 6;
+const velocidadeSnake = 8;
 const corpoSnake = [{ x: 14, y: 14 }];
 const expansaoCobra = 1;
 let gameOver = false;
