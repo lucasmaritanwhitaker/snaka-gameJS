@@ -1,2 +1,2 @@
 # snaka-gameJS
-Joguinho Da Cobrinha Js
+Jogo Da Cobrinha
