@@ -15,8 +15,10 @@ function changeColorSnake() {
 
 function bornBodyStart() {
     const bornBodyChange = document.getElementById('bornWithBody').value;
-    if (bornBodyChange > 0) {
-        corpoSnake.push(corpoSnake).repeat(bornBodyChange);
+    let startBody = 0;
+    while (startBody < bornBodyChange) {
+        corpoSnake.push(corpoSnake);
+        startBody++
     }
 };
 
