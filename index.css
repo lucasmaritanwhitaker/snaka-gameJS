@@ -22,9 +22,33 @@ body{
     color: white;
     font-size: 70px;
 }
+#bornWithBody{height: 30px;
+    width: 50px;
+    text-align: center;
+    font-size: 20px;
+}
+#btn{
+    margin-left: 20px;
+    height: 25px;
+    width: 60px;
+    margin-bottom: 5px;
+    border: 2px solid white;
+    text-align: center;
+    background-color: white;
+}#btn:hover{
+    background-color: black;
+    color: white;
+    transition: 0.8s;
+    cursor: pointer;
+}
 p{
     color: white;
     font-size: 30px;
+}
+label{
+    color: white;
+    font-size: 15px;
+    letter-spacing: 2px;
 }
 
 #tabuleiro{
@@ -37,12 +61,12 @@ p{
 }
 
 .snake{
-    background-color: yellow;
+    background-color: rgb(43, 238, 53);
     border: 0.25vmin solid black;
     
 }
 .comida{
-    background-color: green;
+    background-color: rgb(255, 0, 149);
     border: 0.25vmin solid black;
 }
 .corpoColorido{

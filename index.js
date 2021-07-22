@@ -1,8 +1,7 @@
 const tabuleiro = document.getElementById('tabuleiro')
 const tamanhoTabuleiro = 22;
 const velocidadeSnake = 8;
-const corpoSnake = [{ x: 14, y: 14 }];
-const corpoColorido = [{ x: 10, y: 10 }];
+let corpoSnake = [{ x: 14, y: 14 }];
 const expansaoCobra = 1;
 let gameOver = false;
 let posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
@@ -11,6 +10,14 @@ let novoCumprimento = 0;
 
 function changeColorSnake() {
     document.getElementById('changeSnake').classList.toggle('corpoColorido');
+
+};
+
+function bornBodyStart() {
+    const bornBodyChange = document.getElementById('bornWithBody').value;
+    if (bornBodyChange > 0) {
+        corpoSnake.push(corpoSnake).repeat(bornBodyChange);
+    }
 };
 
 let direcaoSnake = { x: 0, y: 0 };
@@ -124,6 +131,7 @@ function desenhaTela() {
     elementoComida.style.gridRowStart = posicaoComida.y;
     elementoComida.style.gridColumnStart = posicaoComida.x;
     tabuleiro.appendChild(elementoComida);
+
 };
 
 let ultimaRenderizacao = 0;
@@ -146,8 +154,9 @@ function looping(tempoAtual) {
     atualizaTela();
     desenhaTela();
     checkGameOver();
-    const check = document.getElementById('changeColorInput');
-    if (check.checked) {
+
+    const checkColor = document.getElementById('changeColorInput');
+    if (checkColor.checked) {
         changeColorSnake();
     }
 
