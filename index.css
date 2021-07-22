@@ -14,22 +14,39 @@ body{
     background-color: black;
 }
 
-/*Vmin pra pegar o menor HxW [TAB SMP QUADRADO]*/
+#form{
+    margin-bottom: 25%;
+}
+#h2{
+    margin-bottom: 32%;
+    color: white;
+    font-size: 70px;
+}
+p{
+    color: white;
+    font-size: 30px;
+}
 
 #tabuleiro{
     background-color: white;
-    height: 100vmin;
-    width: 100vmin;
+    height: 42vmin;
+    width: 42vmin;
     display: grid;
     grid-template-rows: repeat(22, 1fr);      
     grid-template-columns: repeat(22, 1fr);
 }
 
 .snake{
-    background-color: red;
+    background-color: yellow;
     border: 0.25vmin solid black;
+    
 }
 .comida{
     background-color: green;
     border: 0.25vmin solid black;
 }
+.corpoColorido{
+    background-color: red;
+    border: 0.25vmin solid black;
+}
+

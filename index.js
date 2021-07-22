@@ -2,12 +2,17 @@ const tabuleiro = document.getElementById('tabuleiro')
 const tamanhoTabuleiro = 22;
 const velocidadeSnake = 8;
 const corpoSnake = [{ x: 14, y: 14 }];
+const corpoColorido = [{ x: 10, y: 10 }];
 const expansaoCobra = 1;
 let gameOver = false;
 let posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
 let novoCumprimento = 0;
 
-// Variavel de direção
+
+function changeColorSnake() {
+    document.getElementById('changeSnake').classList.toggle('corpoColorido');
+};
+
 let direcaoSnake = { x: 0, y: 0 };
 
 function direcaoKeyDown() {
@@ -37,7 +42,6 @@ window.addEventListener('keydown', e => {
 
 });
 
-//Gerador De Posições Aleatórias no TABULEIRO
 function geradorDePosicoesAleatoriasTabuleiro() {
     return {
         //Random vai de 0 a 0.9 {1 excluso} - Floor arredonda
@@ -54,12 +58,12 @@ function adcCumprimento() {
         corpoSnake.push({
             ...corpoSnake[corpoSnake.length - 1]
         });
+        changeColorSnake();
+
         novoCumprimento -= 1;
     }
 };
 
-//VALIDAÇÃO - GAME-OVER
-//SNAKE - PAREDE
 function foraDoTabuleiro(position) {
     return position.x > tamanhoTabuleiro || position.x < 1 ||
         position.y > tamanhoTabuleiro || position.y < 1;
@@ -73,7 +77,6 @@ function checkGameOver() {
     }
 };
 
-//Colisão 3 {COBRA - COMIDA || COBRA - COBRA || COBRA - PAREDE}
 function colisao(posicao) {
     return corpoSnake.some(cumprimento => {
         return posicao.x === cumprimento.x && posicao.y === cumprimento.y;
@@ -93,7 +96,7 @@ function atualizaTela() {
     //{Andar os seguimentos ganhos}
     //Sempre na posição do anterior
     for (let i = corpoSnake.length - 2; i >= 0; i--) {
-        corpoSnake[i + 1] = { ...corpoSnake[i] };
+        corpoSnake[i + 1] = { ...corpoSnake[i] }
     }
 
     //Cabeça 
@@ -108,6 +111,7 @@ function desenhaTela() {
     //Snake
     corpoSnake.forEach(cumprimento => {
         const elementoSnake = document.createElement('div');
+        elementoSnake.setAttribute('id', 'changeSnake');
         elementoSnake.classList.add('snake')
         elementoSnake.style.gridRowStart = cumprimento.y;
         elementoSnake.style.gridColumnStart = cumprimento.x;
@@ -122,10 +126,8 @@ function desenhaTela() {
     tabuleiro.appendChild(elementoComida);
 };
 
-//Qnt passou dês da ultima Render
 let ultimaRenderizacao = 0;
 
-//Main
 function looping(tempoAtual) {
 
     window.requestAnimationFrame(looping);
@@ -137,9 +139,6 @@ function looping(tempoAtual) {
     //Liberar {timer acumulado}
     ultimaRenderizacao = tempoAtual;
 
-
-
-    //fnc GAME OVER
     if (gameOver) {
         alert(`VOCÊ PERDEU`)
     }
@@ -147,6 +146,11 @@ function looping(tempoAtual) {
     atualizaTela();
     desenhaTela();
     checkGameOver();
+    const check = document.getElementById('changeColorInput');
+    if (check.checked) {
+        changeColorSnake();
+    }
+
 };
 requestAnimationFrame(looping);
 
