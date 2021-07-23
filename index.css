@@ -26,16 +26,19 @@ body{
 #form{
     margin-bottom: 25%;
 }
+
 #h2{
     margin-bottom: 32%;
     color: white;
     font-size: 70px;
 }
+
 #bornWithBody{height: 30px;
     width: 50px;
     text-align: center;
     font-size: 20px;
 }
+
 #btn{
     margin-left: 8px;
     margin-right: 10px;
@@ -51,10 +54,12 @@ body{
     transition: 0.8s;
     cursor: pointer;
 }
+
 p{
     color: white;
     font-size: 30px;
 }
+
 label{
     color: white;
     font-size: 15px;
@@ -68,6 +73,10 @@ label{
     display: grid;
     grid-template-rows: repeat(22, 1fr);      
     grid-template-columns: repeat(22, 1fr);
+}
+
+#totalScore{
+    margin-top: 470px;
 }
 
 .snake{

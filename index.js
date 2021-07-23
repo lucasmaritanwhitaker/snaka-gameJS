@@ -7,34 +7,33 @@ let gameOver = false;
 let posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
 let novoCumprimento = 0;
 
-
-
-function changeColorSnake() {
+function mudarCorCobra() {
     document.getElementById('changeSnake').classList.toggle('corpoColorido');
+}
 
-};
+function nascerComCorpo() {
+    const nascerCorpoCobra = document.getElementById('nascerComCorpo').value;
+    if (nascerCorpoCobra != 0) {
+        if (autoColisao()) { gameOver = false; }
+    } else if (autoColisao()) { gameOver = true; }
 
-function bornBodyStart() {
-    const bornBodyChange = document.getElementById('bornWithBody').value;
-    let startBody = 0;
-    while (startBody < bornBodyChange) {
+    let corpoNovo = 0;
+    while (corpoNovo < nascerCorpoCobra) {
         corpoSnake.push({
             ...corpoSnake[corpoSnake.length - 1]
         });
-        startBody++
+        corpoNovo++
+
     }
-};
-
-function atravessaP() {
-
 }
+
 let direcaoSnake = { x: 0, y: 0 };
 let ultimaDirecaoSnake = { x: 0, y: 0 }
 
 function direcaoKeyDown() {
     ultimaDirecaoSnake = direcaoSnake;
     return direcaoSnake;
-};
+}
 
 window.addEventListener('keydown', e => {
     switch (e.key) {
@@ -58,9 +57,7 @@ window.addEventListener('keydown', e => {
             direcaoSnake.x = -1;
             direcaoSnake.y = 0;
             break;
-
     }
-
 });
 
 function geradorDePosicoesAleatoriasTabuleiro() {
@@ -69,21 +66,22 @@ function geradorDePosicoesAleatoriasTabuleiro() {
         x: Math.floor(Math.random() * tamanhoTabuleiro) + 1,
         y: Math.floor(Math.random() * tamanhoTabuleiro) + 1
     }
-};
+}
+
 function expandirCobra(valor) {
     novoCumprimento += valor;
-};
+}
 
 function adcCumprimento() {
     if (novoCumprimento > 0) {
         corpoSnake.push({
             ...corpoSnake[corpoSnake.length - 1]
         });
-        changeColorSnake();
+        mudarCorCobra();
 
         novoCumprimento -= 1;
     }
-};
+}
 
 function autoColisao() {
     let snakeHead = corpoSnake[0];
@@ -94,30 +92,30 @@ function autoColisao() {
 
         return snakeHead.x === cumprimento.x && snakeHead.y === cumprimento.y;
     });
-};
+}
 
-function checkGameOver() {
-    if (foraDoTabuleiro(cabecaSnake()) || autoColisao()) {
+function checarGameOver() {
+    if (foraDoTabuleiro(cabecaSnake())) {
         gameOver = true;
     }
-};
+}
 
 function foraDoTabuleiro(position) {
     return position.x > tamanhoTabuleiro || position.x < 1 ||
         position.y > tamanhoTabuleiro || position.y < 1;
-};
+}
 
 function cabecaSnake() {
     return corpoSnake[0]
-};
+}
 
 function colisao(posicao) {
     return corpoSnake.some(cumprimento => {
         return posicao.x === cumprimento.x && posicao.y === cumprimento.y;
     });
-};
+}
 
-function atualizaTela() {
+function atualizarTela() {
     direcaoSnake = direcaoKeyDown();
     adcCumprimento();
     tabuleiro.innerHTML = '';
@@ -125,7 +123,7 @@ function atualizaTela() {
     if (colisao(posicaoComida)) {
         posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
         expandirCobra(expansaoCobra);
-    };
+    }
 
     //Corpo
     //{Andar os seguimentos ganhos}
@@ -137,9 +135,9 @@ function atualizaTela() {
     //Cabeça 
     corpoSnake[0].y += direcaoSnake.y;
     corpoSnake[0].x += direcaoSnake.x;
-};
+}
 
-function desenhaTela() {
+function desenharTela() {
 
     //Criando os elementos {Pegando os atributos do CSS (Class List)}
     //Snake
@@ -159,11 +157,20 @@ function desenhaTela() {
     elementoComida.style.gridColumnStart = posicaoComida.x;
     tabuleiro.appendChild(elementoComida);
 
-};
+}
 
 let ultimaRenderizacao = 0;
+let score = 0;
+
+function contagemScore() {
+    if (colisao(posicaoComida)) {
+        score += 10;
+    }
+}
 
 function looping(tempoAtual) {
+
+    scoreT.innerHTML = `SCORE: ${score}`;
 
     window.requestAnimationFrame(looping);
     const segundosRenderizados = (tempoAtual - ultimaRenderizacao) / 1000;
@@ -175,25 +182,32 @@ function looping(tempoAtual) {
     ultimaRenderizacao = tempoAtual;
 
     if (gameOver) {
-        alert(`VOCÊ PERDEU`)
+        if (confirm(`VOCÊ PERDEU O JOGO 
+        Seu SCORE : ${score}`)) {
+            window.location.reload();
+        } else {
+            window.requestAnimationFrame(looping);
+        }
+        return;
     }
 
-    atualizaTela();
-    desenhaTela();
-    checkGameOver()
+    atualizarTela();
+    desenharTela();
+    checarGameOver();
+    contagemScore();
 
 
 
-    const checkColor = document.getElementById('changeColorInput');
+    const checkColor = document.getElementById('checarCorInput');
     if (checkColor.checked) {
-        changeColorSnake();
+        mudarCorCobra();
     }
-    const checkWalls = document.getElementById('changeWall');
+    const checkWalls = document.getElementById('mudarParede');
     if (checkWalls.checked) {
         console.log(`Você é newbe`)
     }
 
-};
+}
 requestAnimationFrame(looping);
 
 

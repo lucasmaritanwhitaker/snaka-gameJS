@@ -11,19 +11,26 @@
 <body>
     <div id="form">
         <div id="h2">Snake Game</div>
-        <input type="radio" id="changeColorInput">
+        <input type="radio" id="checarCorInput">
         <label>MARQUE (COLORIR CABEÇA)</label>
         <p>CORPO COLORIDO</p>
         <br>
-        <input type="radio" id="changeWall">
+        <input type="radio" id="mudarParede">
         <label>SEM PAREDES</label>
         <p>ELIMINA PAREDES</p>
         <br>
         <label>DEFINA O NÚMERO</label>
-        <input type="number" id="bornWithBody"><input type="submit" id="btn" onclick="bornBodyStart();">
+        <input type="number" id="nascerComCorpo">
         <p>NASCER COM CORPO</p>
+        <br>
+        <br>
+        <input value="START" type="submit" id="btn" onclick="nascerComCorpo();">
+        <br>
     </div>
     <div id="tabuleiro"></div>
+    <div id="totalScore">
+        <p id="scoreT"></p>
+    </div>
     <script src="index.js"></script>
 </body>
 
