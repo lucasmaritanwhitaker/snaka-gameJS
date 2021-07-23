@@ -1,11 +1,12 @@
 const tabuleiro = document.getElementById('tabuleiro')
 const tamanhoTabuleiro = 22;
-const velocidadeSnake = 8;
-let corpoSnake = [{ x: 14, y: 14 }];
+const velocidadeSnake = 10;
 const expansaoCobra = 1;
+let corpoSnake = [{ x: 14, y: 14 }];
 let gameOver = false;
 let posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
 let novoCumprimento = 0;
+
 
 
 function changeColorSnake() {
@@ -17,32 +18,43 @@ function bornBodyStart() {
     const bornBodyChange = document.getElementById('bornWithBody').value;
     let startBody = 0;
     while (startBody < bornBodyChange) {
-        corpoSnake.push(corpoSnake);
+        corpoSnake.push({
+            ...corpoSnake[corpoSnake.length - 1]
+        });
         startBody++
     }
 };
 
+function atravessaP() {
+
+}
 let direcaoSnake = { x: 0, y: 0 };
+let ultimaDirecaoSnake = { x: 0, y: 0 }
 
 function direcaoKeyDown() {
+    ultimaDirecaoSnake = direcaoSnake;
     return direcaoSnake;
 };
 
 window.addEventListener('keydown', e => {
     switch (e.key) {
         case 'ArrowUp':
+            if (ultimaDirecaoSnake.y != 0) break;
             direcaoSnake.x = 0;
             direcaoSnake.y = -1;
             break;
         case 'ArrowDown':
+            if (ultimaDirecaoSnake.y != 0) break;
             direcaoSnake.x = 0;
             direcaoSnake.y = 1;
             break;
         case 'ArrowRight':
+            if (ultimaDirecaoSnake.x != 0) break;
             direcaoSnake.x = 1;
             direcaoSnake.y = 0;
             break;
         case 'ArrowLeft':
+            if (ultimaDirecaoSnake.x != 0) break;
             direcaoSnake.x = -1;
             direcaoSnake.y = 0;
             break;
@@ -73,17 +85,30 @@ function adcCumprimento() {
     }
 };
 
+function autoColisao() {
+    let snakeHead = corpoSnake[0];
+    return corpoSnake.some((cumprimento, seguimento) => {
+        if (seguimento === 0) {
+            return false;
+        }
+
+        return snakeHead.x === cumprimento.x && snakeHead.y === cumprimento.y;
+    });
+};
+
+function checkGameOver() {
+    if (foraDoTabuleiro(cabecaSnake()) || autoColisao()) {
+        gameOver = true;
+    }
+};
+
 function foraDoTabuleiro(position) {
     return position.x > tamanhoTabuleiro || position.x < 1 ||
         position.y > tamanhoTabuleiro || position.y < 1;
-}
+};
+
 function cabecaSnake() {
     return corpoSnake[0]
-};
-function checkGameOver() {
-    if (foraDoTabuleiro(cabecaSnake())) {
-        gameOver = true;
-    }
 };
 
 function colisao(posicao) {
@@ -95,6 +120,7 @@ function colisao(posicao) {
 function atualizaTela() {
     direcaoSnake = direcaoKeyDown();
     adcCumprimento();
+    tabuleiro.innerHTML = '';
 
     if (colisao(posicaoComida)) {
         posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
@@ -111,7 +137,6 @@ function atualizaTela() {
     //Cabeça 
     corpoSnake[0].y += direcaoSnake.y;
     corpoSnake[0].x += direcaoSnake.x;
-    tabuleiro.innerHTML = '';
 };
 
 function desenhaTela() {
@@ -155,11 +180,17 @@ function looping(tempoAtual) {
 
     atualizaTela();
     desenhaTela();
-    checkGameOver();
+    checkGameOver()
+
+
 
     const checkColor = document.getElementById('changeColorInput');
     if (checkColor.checked) {
         changeColorSnake();
+    }
+    const checkWalls = document.getElementById('changeWall');
+    if (checkWalls.checked) {
+        console.log(`Você é newbe`)
     }
 
 };
