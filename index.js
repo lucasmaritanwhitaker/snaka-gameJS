@@ -1,11 +1,12 @@
 const tabuleiro = document.getElementById('tabuleiro')
 const tamanhoTabuleiro = 22;
 const velocidadeSnake = 8;
-let corpoSnake = [{ x: 14, y: 14 }];
 const expansaoCobra = 1;
+let corpoSnake = [{ x: 14, y: 14 }];
 let gameOver = false;
 let posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
 let novoCumprimento = 0;
+
 
 
 function changeColorSnake() {
@@ -23,26 +24,32 @@ function bornBodyStart() {
 };
 
 let direcaoSnake = { x: 0, y: 0 };
+let ultimaDirecaoSnake = { x: 0, y: 0 }
 
 function direcaoKeyDown() {
+    ultimaDirecaoSnake = direcaoSnake;
     return direcaoSnake;
 };
 
 window.addEventListener('keydown', e => {
     switch (e.key) {
         case 'ArrowUp':
+            if (ultimaDirecaoSnake.y != 0) break;
             direcaoSnake.x = 0;
             direcaoSnake.y = -1;
             break;
         case 'ArrowDown':
+            if (ultimaDirecaoSnake.y != 0) break;
             direcaoSnake.x = 0;
             direcaoSnake.y = 1;
             break;
         case 'ArrowRight':
+            if (ultimaDirecaoSnake.x != 0) break;
             direcaoSnake.x = 1;
             direcaoSnake.y = 0;
             break;
         case 'ArrowLeft':
+            if (ultimaDirecaoSnake.x != 0) break;
             direcaoSnake.x = -1;
             direcaoSnake.y = 0;
             break;
@@ -73,15 +80,28 @@ function adcCumprimento() {
     }
 };
 
+function selfColision() {
+    const snakeHead = corpoSnake[0];
+    return corpoSnake.some(cumprimento, seguimento => {
+        if (seguimento === 0) {
+            return false;
+        }
+
+        return snakeHead.x === cumprimento.x && snakeHead.y === cumprimento.y;
+    });
+};
+
 function foraDoTabuleiro(position) {
     return position.x > tamanhoTabuleiro || position.x < 1 ||
         position.y > tamanhoTabuleiro || position.y < 1;
-}
+};
+
 function cabecaSnake() {
     return corpoSnake[0]
 };
+
 function checkGameOver() {
-    if (foraDoTabuleiro(cabecaSnake())) {
+    if (foraDoTabuleiro(cabecaSnake() || selfColision())) {
         gameOver = true;
     }
 };
@@ -156,6 +176,7 @@ function looping(tempoAtual) {
     atualizaTela();
     desenhaTela();
     checkGameOver();
+
 
     const checkColor = document.getElementById('changeColorInput');
     if (checkColor.checked) {
