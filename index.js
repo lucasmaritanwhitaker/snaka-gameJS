@@ -1,6 +1,6 @@
 const tabuleiro = document.getElementById('tabuleiro')
 const tamanhoTabuleiro = 22;
-const velocidadeSnake = 8;
+const velocidadeSnake = 10;
 const expansaoCobra = 1;
 let corpoSnake = [{ x: 14, y: 14 }];
 let gameOver = false;
@@ -18,11 +18,16 @@ function bornBodyStart() {
     const bornBodyChange = document.getElementById('bornWithBody').value;
     let startBody = 0;
     while (startBody < bornBodyChange) {
-        corpoSnake.push(corpoSnake);
+        corpoSnake.push({
+            ...corpoSnake[corpoSnake.length - 1]
+        });
         startBody++
     }
 };
 
+function atravessaP() {
+
+}
 let direcaoSnake = { x: 0, y: 0 };
 let ultimaDirecaoSnake = { x: 0, y: 0 }
 
@@ -80,15 +85,21 @@ function adcCumprimento() {
     }
 };
 
-function selfColision() {
-    const snakeHead = corpoSnake[0];
-    return corpoSnake.some(cumprimento, seguimento => {
+function autoColisao() {
+    let snakeHead = corpoSnake[0];
+    return corpoSnake.some((cumprimento, seguimento) => {
         if (seguimento === 0) {
             return false;
         }
 
         return snakeHead.x === cumprimento.x && snakeHead.y === cumprimento.y;
     });
+};
+
+function checkGameOver() {
+    if (foraDoTabuleiro(cabecaSnake()) || autoColisao()) {
+        gameOver = true;
+    }
 };
 
 function foraDoTabuleiro(position) {
@@ -100,12 +111,6 @@ function cabecaSnake() {
     return corpoSnake[0]
 };
 
-function checkGameOver() {
-    if (foraDoTabuleiro(cabecaSnake() || selfColision())) {
-        gameOver = true;
-    }
-};
-
 function colisao(posicao) {
     return corpoSnake.some(cumprimento => {
         return posicao.x === cumprimento.x && posicao.y === cumprimento.y;
@@ -115,6 +120,7 @@ function colisao(posicao) {
 function atualizaTela() {
     direcaoSnake = direcaoKeyDown();
     adcCumprimento();
+    tabuleiro.innerHTML = '';
 
     if (colisao(posicaoComida)) {
         posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
@@ -131,7 +137,6 @@ function atualizaTela() {
     //Cabeça 
     corpoSnake[0].y += direcaoSnake.y;
     corpoSnake[0].x += direcaoSnake.x;
-    tabuleiro.innerHTML = '';
 };
 
 function desenhaTela() {
@@ -175,12 +180,17 @@ function looping(tempoAtual) {
 
     atualizaTela();
     desenhaTela();
-    checkGameOver();
+    checkGameOver()
+
 
 
     const checkColor = document.getElementById('changeColorInput');
     if (checkColor.checked) {
         changeColorSnake();
+    }
+    const checkWalls = document.getElementById('changeWall');
+    if (checkWalls.checked) {
+        console.log(`Você é newbe`)
     }
 
 };
