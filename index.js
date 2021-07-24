@@ -1,7 +1,7 @@
 const tabuleiro = document.getElementById('tabuleiro')
 const tamanhoTabuleiro = 22;
-const velocidadeSnake = 10;
 const expansaoCobra = 1;
+let velocidadeSnake = 5;
 let corpoSnake = [{ x: 14, y: 14 }];
 let gameOver = false;
 let posicaoComida = geradorDePosicoesAleatoriasTabuleiro();
@@ -24,6 +24,12 @@ function nascerComCorpo() {
         });
         corpoNovo++
 
+    }
+}
+
+function aumentaVelocidade() {
+    if (colisao(posicaoComida)) {
+        velocidadeSnake += 0.9;
     }
 }
 
@@ -165,6 +171,7 @@ let score = 0;
 function contagemScore() {
     if (colisao(posicaoComida)) {
         score += 10;
+
     }
 }
 
@@ -181,6 +188,8 @@ function looping(tempoAtual) {
     //Liberar {timer acumulado}
     ultimaRenderizacao = tempoAtual;
 
+
+
     if (gameOver) {
         if (confirm(`VOCÊ PERDEU O JOGO 
         Seu SCORE : ${score}`)) {
@@ -195,7 +204,7 @@ function looping(tempoAtual) {
     desenharTela();
     checarGameOver();
     contagemScore();
-
+    aumentaVelocidade();
 
 
     const checkColor = document.getElementById('checarCorInput');
