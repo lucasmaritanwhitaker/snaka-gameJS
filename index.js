@@ -13,9 +13,14 @@ function mudarCorCobra() {
 
 function nascerComCorpo() {
     const nascerCorpoCobra = document.getElementById('nascerComCorpo').value;
+
     if (nascerCorpoCobra != 0) {
-        if (autoColisao()) { gameOver = false; }
-    } else if (autoColisao()) { gameOver = true; }
+        if (autoColisao()) {
+            gameOver = false;
+        }
+    } else if (autoColisao()) {
+        gameOver = true;
+    }
 
     let corpoNovo = 0;
     while (corpoNovo < nascerCorpoCobra) {
@@ -29,7 +34,7 @@ function nascerComCorpo() {
 
 function aumentaVelocidade() {
     if (colisao(posicaoComida)) {
-        velocidadeSnake += 0.9;
+        velocidadeSnake += 0.85;
     }
 }
 
@@ -101,7 +106,7 @@ function autoColisao() {
 }
 
 function checarGameOver() {
-    if (foraDoTabuleiro(cabecaSnake())) {
+    if (foraDoTabuleiro(cabecaSnake()) || autoColisao()) {
         gameOver = true;
     }
 }
@@ -171,7 +176,6 @@ let score = 0;
 function contagemScore() {
     if (colisao(posicaoComida)) {
         score += 10;
-
     }
 }
 
@@ -202,10 +206,8 @@ function looping(tempoAtual) {
 
     atualizarTela();
     desenharTela();
-    checarGameOver();
     contagemScore();
     aumentaVelocidade();
-
 
     const checkColor = document.getElementById('checarCorInput');
     if (checkColor.checked) {
@@ -213,8 +215,11 @@ function looping(tempoAtual) {
     }
     const checkWalls = document.getElementById('mudarParede');
     if (checkWalls.checked) {
-        console.log(`Você é newbe`)
-    }
+        if (foraDoTabuleiro(cabecaSnake())) {
+            gameOver = false;
+        }
+
+    } else if (foraDoTabuleiro(cabecaSnake())) { gameOver = true; }
 
 }
 requestAnimationFrame(looping);
