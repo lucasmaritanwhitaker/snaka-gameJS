@@ -218,7 +218,9 @@ function looping(tempoAtual) {
         if (foraDoTabuleiro(cabecaSnake())) {
             gameOver = false;
         }
-
+        if (autoColisao()) {
+            gameOver = true;
+        }
     } else if (foraDoTabuleiro(cabecaSnake())) { gameOver = true; }
 
 }
