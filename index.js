@@ -216,6 +216,12 @@ function looping(tempoAtual) {
     const checkWalls = document.getElementById('mudarParede');
     if (checkWalls.checked) {
         if (foraDoTabuleiro(cabecaSnake())) {
+            if (corpoSnake[0].x > tamanhoTabuleiro) {
+                corpoSnake[0].x = 1
+            }
+            if (corpoSnake[0].y > tamanhoTabuleiro) {
+                corpoSnake[0].y = 1
+            }
             gameOver = false;
         }
         if (autoColisao()) {
