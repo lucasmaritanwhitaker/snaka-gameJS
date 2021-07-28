@@ -212,6 +212,9 @@ function looping(tempoAtual) {
     const checkColor = document.getElementById('checarCorInput');
     if (checkColor.checked) {
         mudarCorCobra();
+        if (autoColisao()) {
+            gameOver = true;
+        }
     }
     const checkWalls = document.getElementById('mudarParede');
     if (checkWalls.checked) {
