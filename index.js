@@ -218,9 +218,13 @@ function looping(tempoAtual) {
         if (foraDoTabuleiro(cabecaSnake())) {
             if (corpoSnake[0].x > tamanhoTabuleiro) {
                 corpoSnake[0].x = 1
+            } if (corpoSnake[0].x < 1) {
+                corpoSnake[0].x = tamanhoTabuleiro
             }
             if (corpoSnake[0].y > tamanhoTabuleiro) {
                 corpoSnake[0].y = 1
+            } if (corpoSnake[0].y < 1) {
+                corpoSnake[0].y = tamanhoTabuleiro
             }
             gameOver = false;
         }
