@@ -14,10 +14,6 @@ function mudarCorCobra() {
 function nascerComCorpo() {
     const nascerCorpoCobra = document.getElementById('nascerComCorpo').value;
 
-    if (autoColisao()) {
-        gameOver = false;
-    }
-
     let corpoNovo = 0;
     while (corpoNovo < nascerCorpoCobra) {
         corpoSnake.push({
@@ -214,26 +210,21 @@ function looping(tempoAtual) {
 
 
     if (gameOver) {
-        if (confirm(`VOCÊ PERDEU O JOGO 
-        Seu SCORE : ${score}`)) {
-            window.location.reload();
-        } else {
-            window.requestAnimationFrame(looping);
-        }
-        return;
+        alert(`VOCÊ PERDEU 
+        SCORE : ${score}`)
     }
 
     atualizarTela();
     desenharTela();
     contagemScore();
     aumentaVelocidade();
-    mudarParede()
-
+    checarGameOver();
 
     const checkColor = document.getElementById('checarCorInput');
     if (checkColor.checked) {
         mudarCorCobra();
     }
+
     const checkWalls = document.getElementById('mudarParede');
     if (checkWalls.checked) {
         mudarParede();
@@ -246,6 +237,17 @@ function looping(tempoAtual) {
         trocaP.classList.add('aparecerDiv');
     }
 
+    const checkCorpoCobra = document.getElementById('mudarCorpoCobra');
+    if (checkCorpoCobra.checked) {
+        if (autoColisao()) { gameOver = false; }
+        let trocaC = document.getElementById('checkNascerComCorpo');
+        trocaC.classList.remove('aparecerDiv');
+        trocaC.classList.add('esconderDiv');
+    } else {
+        let trocaC = document.getElementById('checkNascerComCorpo');
+        trocaC.classList.remove('esconderDiv');
+        trocaC.classList.add('aparecerDiv');
+    }
 }
 requestAnimationFrame(looping);
 
