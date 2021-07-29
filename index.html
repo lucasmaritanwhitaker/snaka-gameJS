@@ -15,13 +15,17 @@
         <label>MARQUE (COLORIR CABEÇA)</label>
         <p>CORPO COLORIDO</p>
         <br>
-        <input type="checkbox" id="mudarParede">
-        <label>SEM PAREDES</label>
-        <p>ELIMINA PAREDES</p>
+        <div id="checkNascerComCorpo" class="aparecerDiv">
+            <input type="checkbox" id="mudarParede">
+            <label>SEM PAREDES</label>
+            <p>ELIMINA PAREDES</p>
+        </div>
         <br>
-        <label>DEFINA O NÚMERO</label>
-        <input type="number" id="nascerComCorpo">
-        <p>NASCER COM CORPO</p>
+        <div id="checkParedes" class="aparecerDiv">
+            <label>DEFINA O NÚMERO</label>
+            <input type="number" id="nascerComCorpo">
+            <p>NASCER COM CORPO</p>
+        </div>
         <br>
         <br>
         <input value="START" type="submit" id="btn" onclick="nascerComCorpo();">

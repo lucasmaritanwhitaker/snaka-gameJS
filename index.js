@@ -14,12 +14,8 @@ function mudarCorCobra() {
 function nascerComCorpo() {
     const nascerCorpoCobra = document.getElementById('nascerComCorpo').value;
 
-    if (nascerCorpoCobra != 0) {
-        if (autoColisao()) {
-            gameOver = false;
-        }
-    } else if (autoColisao()) {
-        gameOver = true;
+    if (autoColisao()) {
+        gameOver = false;
     }
 
     let corpoNovo = 0;
@@ -35,6 +31,29 @@ function nascerComCorpo() {
 function aumentaVelocidade() {
     if (colisao(posicaoComida)) {
         velocidadeSnake += 0.85;
+    }
+}
+
+function mudarParede() {
+
+    if (foraDoTabuleiro(cabecaSnake())) {
+        if (corpoSnake[0].x > tamanhoTabuleiro) {
+            corpoSnake[0].x = 1
+        } if (corpoSnake[0].x < 1) {
+            corpoSnake[0].x = tamanhoTabuleiro
+        }
+        if (corpoSnake[0].y > tamanhoTabuleiro) {
+            corpoSnake[0].y = 1
+        } if (corpoSnake[0].y < 1) {
+            corpoSnake[0].y = tamanhoTabuleiro
+        }
+        gameOver = false;
+    }
+    if (autoColisao()) {
+        gameOver = true;
+    } else if (foraDoTabuleiro(cabecaSnake())) {
+        gameOver = true;
+
     }
 }
 
@@ -208,6 +227,8 @@ function looping(tempoAtual) {
     desenharTela();
     contagemScore();
     aumentaVelocidade();
+    mudarParede()
+
 
     const checkColor = document.getElementById('checarCorInput');
     if (checkColor.checked) {
@@ -215,23 +236,15 @@ function looping(tempoAtual) {
     }
     const checkWalls = document.getElementById('mudarParede');
     if (checkWalls.checked) {
-        if (foraDoTabuleiro(cabecaSnake())) {
-            if (corpoSnake[0].x > tamanhoTabuleiro) {
-                corpoSnake[0].x = 1
-            } if (corpoSnake[0].x < 1) {
-                corpoSnake[0].x = tamanhoTabuleiro
-            }
-            if (corpoSnake[0].y > tamanhoTabuleiro) {
-                corpoSnake[0].y = 1
-            } if (corpoSnake[0].y < 1) {
-                corpoSnake[0].y = tamanhoTabuleiro
-            }
-            gameOver = false;
-        }
-        if (autoColisao()) {
-            gameOver = true;
-        }
-    } else if (foraDoTabuleiro(cabecaSnake())) { gameOver = true; }
+        mudarParede();
+        let trocaP = document.getElementById('checkParedes');
+        trocaP.classList.remove('aparecerDiv');
+        trocaP.classList.add('esconderDiv');
+    } else {
+        let trocaP = document.getElementById('checkParedes');
+        trocaP.classList.remove('esconderDiv');
+        trocaP.classList.add('aparecerDiv');
+    }
 
 }
 requestAnimationFrame(looping);
