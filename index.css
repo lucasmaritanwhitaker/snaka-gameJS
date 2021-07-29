@@ -93,3 +93,9 @@ label{
     border: 0.25vmin solid black;
 }
 
+.esconderDiv{
+    visibility: hidden;
+}
+.aparecerDiv{
+    visibility: visible;
+}
